@@ -21,8 +21,4 @@ Check out the dash board here: https://optimization-dashboard.herokuapp.com/
 - Numpy
 - Pandas
 - Plotly
-<<<<<<< HEAD
 - Plotly Dash
-=======
-- Plotly Dash
->>>>>>> 00b89f6030e3146352ef94f1287d7cd88d22f5f7
