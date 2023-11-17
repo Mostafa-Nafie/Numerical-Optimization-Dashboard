@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -17,24 +14,12 @@ np.random.seed(44)
 
 # # Loading Data:
 
-# In[2]:
-
-
 df = pd.read_csv('./data/linear_regression.csv')
-
-
-# In[3]:
-
-
 X_points = df[['X']].values
 y_points = df[['y']].values
 
 
 # # Analytic Solution:
-
-# In[4]:
-
-
 x_points_analytic = np.hstack((np.ones((20, 1)), df['X'].values.reshape((-1, 1))))
 optimal_theta = (np.linalg.inv(x_points_analytic.T @ x_points_analytic)) @ x_points_analytic.T @ df['y'].values.reshape((-1, 1))
 
@@ -42,10 +27,6 @@ optimal_theta = (np.linalg.inv(x_points_analytic.T @ x_points_analytic)) @ x_poi
 # # Optimization Algorithms:
 
 # ## `1)` Gradient Descent:
-
-# In[5]:
-
-
 def GradientDescent(X, y, fit_intercept=True, lr=0.001, epochs=10, batch_size=5, shuffle=True):
     if shuffle:
         np.random.seed(0)
@@ -89,10 +70,6 @@ def GradientDescent(X, y, fit_intercept=True, lr=0.001, epochs=10, batch_size=5,
 
 
 # ## `2)` Gradient Descent with Momentum:
-
-# In[6]:
-
-
 def GDMomentum(X, y, epochs=100, fit_intercept=True, lr=0.001, beta=0.9, batch_size=20, shuffle=True):
     m, n = X.shape
     if fit_intercept:
@@ -138,10 +115,6 @@ def GDMomentum(X, y, epochs=100, fit_intercept=True, lr=0.001, beta=0.9, batch_s
 
 
 # ## `3)` Nesterov Accelerated Gradient (NAG):
-
-# In[7]:
-
-
 def NAG(X, y, fit_intercept=True, epochs=100, lr=0.001, beta=0.9, batch_size=20, shuffle=True):
     m, n = X.shape
     if fit_intercept:
@@ -188,10 +161,6 @@ def NAG(X, y, fit_intercept=True, epochs=100, lr=0.001, beta=0.9, batch_size=20,
 
 
 # ## `4)` AdaGrad:
-
-# In[8]:
-
-
 def AdaGrad(X, y, fit_intercept=True, lr=0.001, beta=0.99, epochs=10, batch_size = 5, shuffle=True):
     m, n = X.shape
     
@@ -239,10 +208,6 @@ def AdaGrad(X, y, fit_intercept=True, lr=0.001, beta=0.99, epochs=10, batch_size
 
 
 # ## `5)` RMSProp:
-
-# In[9]:
-
-
 def RMSProp(X, y, fit_intercept=True, lr=0.001, beta=0.99, epochs=10, batch_size = 20, shuffle=True):
     m, n = X.shape
     
@@ -289,10 +254,6 @@ def RMSProp(X, y, fit_intercept=True, lr=0.001, beta=0.99, epochs=10, batch_size
 
 
 # ## `6)` Adam:
-
-# In[10]:
-
-
 def ADAM(X, y, fit_intercept=True, lr=0.7, beta_1=0.9, beta_2=0.99, batch_size=5, epochs=10, shuffle=True):
     m, n = X.shape
     
@@ -345,9 +306,6 @@ def ADAM(X, y, fit_intercept=True, lr=0.7, beta_1=0.9, beta_2=0.99, batch_size=5
     
 
 
-# In[11]:
-
-
 thetas_df_gd = GradientDescent(X_points, y_points, fit_intercept=True, lr=0.2, epochs=50)
 thetas_df_adam = ADAM(X_points, y_points, fit_intercept=True, lr=0.6, beta_1=0.9, beta_2=0.99, epochs=100)
 thetas_df_sgd = ADAM(X_points, y_points, fit_intercept=True, lr=0.1, epochs=100)
@@ -356,10 +314,6 @@ thetas_df_sgd = ADAM(X_points, y_points, fit_intercept=True, lr=0.1, epochs=100)
 # # Defining Figures:
 
 # ## `1)` Cost 3D Figure:
-
-# In[12]:
-
-
 n = 20
 t0 = np.linspace(-1, 8, n, endpoint=True)
 t1 = np.linspace(-1, 8, n, endpoint=True)
@@ -392,17 +346,10 @@ def plot_cost_3D(thetas_df):
     return cost_3D_fig
 
 
-# In[13]:
-
-
 thetas = GradientDescent(X_points, y_points, fit_intercept=True, lr=0.1, batch_size=20, epochs=100)
 
 
 # ## `2)` Cost 2D Figure:
-
-# In[14]:
-
-
 def plot_cost_2D(thetas_df):
     epoch_list = [0]
     cost_list = [thetas_df['cost'][0].item()]
@@ -430,10 +377,6 @@ def plot_cost_2D(thetas_df):
 
 
 # ## `3)` Regression Line Figure:
-
-# In[15]:
-
-
 def plot_regression_line(df_thetas):
     h = lambda theta_0, theta_1, x: theta_0 + theta_1 @ x
     # compute the ys for the x values for each iteration
@@ -484,10 +427,6 @@ def plot_regression_line(df_thetas):
 
 
 # ## `4)` Theta_0 vs epochs Figure:
-
-# In[16]:
-
-
 def plot_theta_0(thetas_df):
     epoch_list = [0]
     theta_0_list = [thetas_df['theta 0'][0].item()]
@@ -515,10 +454,6 @@ def plot_theta_0(thetas_df):
 
 
 # ## `5)` Theta_1 vs epochs Figure:
-
-# In[17]:
-
-
 def plot_theta_1(thetas_df):
     epoch_list = [0]
     theta_1_list = [thetas_df['theta 1'][0].item()]
@@ -546,10 +481,6 @@ def plot_theta_1(thetas_df):
 
 
 # ## Combining 2D Figures Together:
-
-# In[18]:
-
-
 def combine_figures(theta_df):
     cost_2D_fig = plot_cost_2D(theta_df)
     regression_line_fig = plot_regression_line(theta_df)
@@ -617,16 +548,6 @@ def combine_figures(theta_df):
 
 
 # # Creating The Dashboard:
-
-# In[19]:
-
-
-
-
-
-# In[20]:
-
-
 header = html.Header(
     id='header',
     children=[
@@ -759,8 +680,15 @@ combine_2D_container = html.Div(id='combined-2D-container', children=[
 ])
 
 
-# In[21]:
-
+footer = html.Div(
+    id='footer',
+    children=[
+        html.Div('Numerical Optimization Dashboard © 2022 Developed by', style={'color': '#fff', 'font-size': '1rem'}),
+        html.A(" Mostafa Nafie ", href="https://www.linkedin.com/in/mostafa-nafie/", style={'color': '#c0d6e4', 'font-size': '1rem', 'text-decoration': 'none', 'padding': '0 0.3%'}),
+    ],
+    className = 'conatiner d-flex align-items-center justify-content-center',
+    style={'backgroundColor': '#22486d'}
+)
 
 app = Dash(external_stylesheets=['./assets/css/slider.css', dbc.themes.BOOTSTRAP])
 
@@ -768,6 +696,7 @@ app.layout = html.Div(children=[
     header,
     first_row_container,
     combine_2D_container,
+    footer
 ])
 server = app.server
 
@@ -841,5 +770,3 @@ def graph_function(algorithm, input_batch_size, input_lr, input_beta1, input_bet
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-
-# 
